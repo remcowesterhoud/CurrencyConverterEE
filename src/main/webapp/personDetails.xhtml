@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Person Bean Validation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+</h:head>
+<h:body>
+    <div class="col-md-10 col-md-offset-1">
+        <h2><i class="fa fa-user"/> Person Details <i class="fa fa-user"/></h2>
+        <div class="messagecolor">
+            <h:messages showSummary="true"
+                        showDetail="true"
+                        errorStyle="color: #d20005"
+                        infoStyle="color: blue"/>
+        </div>
+
+        <h:form>
+            <h:outputLabel>First name: #{personBean.firstName}</h:outputLabel><br/>
+            <h:outputLabel>Last name: #{personBean.lastName}</h:outputLabel><br/>
+            <h:outputLabel>Email: #{personBean.email}</h:outputLabel><br/>
+            <h:outputLabel>Age: #{personBean.age}</h:outputLabel>
+        </h:form>
+    </div>
+</h:body>
+</html>

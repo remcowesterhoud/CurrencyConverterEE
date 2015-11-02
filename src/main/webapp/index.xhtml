@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<h:head>
+    <title>Currency Converter</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+</h:head>
+<h:body>
+    <div class="col-md-10 col-md-offset-1">
+        <p>
+            <h:form>
+                <h2><i class="fa fa-money"/> Currency Converter <i class="fa fa-money"/></h2>
+
+                <div class="messagecolor">
+                    <h:messages showSummary="true"
+                                showDetail="false"
+                                errorStyle="color: #d20005"
+                                infoStyle="color: blue"/>
+                </div>
+
+                <h:inputText id="amount" p:type="number"
+                             value="#{conversionBean.input}"
+                             p:title="Enter an amount"
+                             p:min="1" p:max="10000">
+                    <f:ajax event="change" render="currencyTable"
+                            listener="#{conversionBean.updateConvertedAmounts}"/>
+                </h:inputText>
+                <!--Table example-->
+                <h:dataTable id="currencyTable" value="#{conversionBean.data}" var="t"
+                             class="table table-striped">
+                    <h:column>
+                        <f:facet name="header">
+                            From
+                            <span style="float: right">
+                            <h:commandLink action="#{conversionBean.sortByFromCurrency(1)}">
+                                <i class="fa fa-caret-up"/>
+                            </h:commandLink>
+                            <h:commandLink action="#{conversionBean.sortByFromCurrency(-1)}">
+                                <i class="fa fa-caret-down"/>
+                            </h:commandLink>
+                            </span>
+                        </f:facet>
+                        <h:outputText escape="false" value="#{t.from.getIcon()}"/>
+                        #{t.from.toString()}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Too
+                            <span style="float: right">
+                            <h:commandLink action="#{conversionBean.sortByTooCurrency(1)}">
+                                <i class="fa fa-caret-up"/>
+                            </h:commandLink>
+                            <h:commandLink action="#{conversionBean.sortByTooCurrency(-1)}">
+                                <i class="fa fa-caret-down"/>
+                            </h:commandLink>
+                            </span>
+                        </f:facet>
+                        <h:outputText escape="false" value="#{t.too.getIcon()}"/>
+                        #{t.too.toString()}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Exchange Rate
+                            <span style="float: right">
+                            <h:commandLink action="#{conversionBean.sortDataByExchangeRate(1)}">
+                                <i class="fa fa-caret-up"/>
+                            </h:commandLink>
+                            <h:commandLink action="#{conversionBean.sortDataByExchangeRate(-1)}">
+                                <i class="fa fa-caret-down"/>
+                            </h:commandLink>
+                            </span>
+                        </f:facet>
+                        <h:inputText value="#{t.exchangeRate}" rendered="#{t.edited}"/>
+                        <h:outputText value="#{t.exchangeRate}" rendered="#{not t.edited}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Converted Amount
+                        <span style="float: right">
+                            <h:commandLink action="#{conversionBean.sortByConvertedAmount(1)}">
+                                <i class="fa fa-caret-up"/>
+                            </h:commandLink>
+                            <h:commandLink action="#{conversionBean.sortByConvertedAmount(-1)}">
+                                <i class="fa fa-caret-down"/>
+                            </h:commandLink>
+                        </span>
+                        </f:facet>
+                        #{t.convertedAmount}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Edit</f:facet>
+                        <h:commandLink value="Edit"
+                                       action="#{conversionBean.editRow(t)}"
+                                       rendered="#{not t.edited}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Delete</f:facet>
+                        <h:commandLink value="Delete"
+                                       action="#{conversionBean.deleteConversion(t)}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Convert</f:facet>
+                    <h:commandLink value="Convert"
+                                   action="#{conversionBean.convert(t)}"/>
+                    </h:column>
+
+                </h:dataTable>
+                <h:commandButton value="Save Changes"
+                                 action="#{conversionBean.saveChanges()}" class="btn btn-primary"/>
+                <h:commandButton value="Add New Conversion"
+                                 action="#{conversionBean.addNewRow()}" class="btn btn-primary"/>
+                <h:commandButton value="Convert input from Euro too Dollar"
+                                 action="#{conversionBean.convertTest()}" styleClass="btn btn-primary"/>
+            </h:form>
+        </p>
+        <h:form id="uploadForm" enctype="multipart/form-data">
+            <div class="col-md-3">
+                <h:inputFile id="fileToUpload" required="true"
+                             requiredMessage="No file selected ..."
+                             value="#{uploadBean.file}"/>
+            </div>
+            <div class="col-md-2">
+                <h:commandButton value="Override" action="#{uploadBean.uploadOverride()}" class="btn btn-primary"/>
+                <h:commandButton value="Add" action="#{uploadBean.uploadAdd()}" class="btn btn-primary"/>
+            </div>
+        </h:form>
+
+    </div>
+</h:body>
+</html>
